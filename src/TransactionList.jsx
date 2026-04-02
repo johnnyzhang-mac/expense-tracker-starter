@@ -53,12 +53,12 @@ function TransactionList({ transactions, onDelete }) {
               </td>
               <td>
                 {confirmingId === t.id ? (
-                  <>
-                    <button onClick={() => { onDelete(t.id); setConfirmingId(null); }}>Confirm?</button>
-                    <button onClick={() => setConfirmingId(null)}>Cancel</button>
-                  </>
+                  <span style={{ display: 'flex', gap: 6 }}>
+                    <button className="delete-btn confirm" onClick={() => { onDelete(t.id); setConfirmingId(null); }}>Confirm</button>
+                    <button className="delete-btn cancel" onClick={() => setConfirmingId(null)}>Cancel</button>
+                  </span>
                 ) : (
-                  <button onClick={() => setConfirmingId(t.id)}>Delete</button>
+                  <button className="delete-btn" onClick={() => setConfirmingId(t.id)}>Delete</button>
                 )}
               </td>
             </tr>

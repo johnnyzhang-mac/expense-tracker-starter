@@ -1,11 +1,30 @@
-* {
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap');
+
+:root {
+  --bg:             #0b0b0e;
+  --surface:        #111116;
+  --surface-2:      #17171e;
+  --border:         #21212e;
+  --border-subtle:  #17171e;
+  --text:           #ece8de;
+  --text-muted:     #52526a;
+  --text-dim:       #2a2a38;
+  --accent:         #e8b84b;
+  --accent-dim:     rgba(232, 184, 75, 0.08);
+  --income:         #3ecf8e;
+  --expense:        #f2695a;
+}
+
+*, *::before, *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background-color: #ffffff;
-  color: #333;
+  font-family: 'DM Mono', monospace;
+  background-color: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
