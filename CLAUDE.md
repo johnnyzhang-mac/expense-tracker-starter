@@ -16,10 +16,15 @@ No test framework is configured.
 
 ## Architecture
 
-This is a single-file React app (`src/App.jsx`) with all state and logic in one `App` component. There is no routing, no context, and no external state management.
+No routing, no context, no external state management. `App` is the sole data layer — it holds the `transactions` array and passes it down to child components.
 
-**Known bugs and issues (intentional — this is a course starter project):**
-- `amount` is stored as a string in state, so `totalIncome` and `totalExpenses` use string concatenation instead of numeric addition (the `reduce` sums are wrong)
+**Component breakdown:**
+- `App` — owns `transactions` state and `handleAdd`; renders the other three components
+- `Summary` — receives `transactions`, computes `totalIncome`, `totalExpenses`, and `balance` internally
+- `TransactionForm` — owns its own form state; calls `onAdd(transaction)` prop on submit
+- `TransactionList` — receives `transactions`, owns filter state (`filterType`, `filterCategory`) internally
+
+**Known issues (intentional — this is a course starter project):**
 - "Freelance Work" is seeded as `type: "expense"` but `category: "salary"` — logically inconsistent
 - No delete functionality
 - UI/CSS is intentionally rough
