@@ -2,9 +2,10 @@ import { useState } from 'react'
 
 const categories = ["food", "housing", "utilities", "transport", "entertainment", "salary", "other"];
 
-function TransactionList({ transactions }) {
+function TransactionList({ transactions, onDelete }) {
   const [filterType, setFilterType] = useState("all");
   const [filterCategory, setFilterCategory] = useState("all");
+  const [confirmingId, setConfirmingId] = useState(null);
 
   let filteredTransactions = transactions;
   if (filterType !== "all") {
@@ -38,6 +39,7 @@ function TransactionList({ transactions }) {
             <th>Description</th>
             <th>Category</th>
             <th>Amount</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -48,6 +50,16 @@ function TransactionList({ transactions }) {
               <td>{t.category}</td>
               <td className={t.type === "income" ? "income-amount" : "expense-amount"}>
                 {t.type === "income" ? "+" : "-"}${t.amount}
+              </td>
+              <td>
+                {confirmingId === t.id ? (
+                  <>
+                    <button onClick={() => { onDelete(t.id); setConfirmingId(null); }}>Confirm?</button>
+                    <button onClick={() => setConfirmingId(null)}>Cancel</button>
+                  </>
+                ) : (
+                  <button onClick={() => setConfirmingId(t.id)}>Delete</button>
+                )}
               </td>
             </tr>
           ))}
