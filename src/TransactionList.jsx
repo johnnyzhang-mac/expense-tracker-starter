@@ -32,39 +32,28 @@ function TransactionList({ transactions, onDelete }) {
         </select>
       </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Description</th>
-            <th>Category</th>
-            <th>Amount</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredTransactions.map(t => (
-            <tr key={t.id}>
-              <td>{t.date}</td>
-              <td>{t.description}</td>
-              <td>{t.category}</td>
-              <td className={t.type === "income" ? "income-amount" : "expense-amount"}>
-                {t.type === "income" ? "+" : "-"}${t.amount}
-              </td>
-              <td>
-                {confirmingId === t.id ? (
-                  <span style={{ display: 'flex', gap: 6 }}>
-                    <button className="delete-btn confirm" onClick={() => { onDelete(t.id); setConfirmingId(null); }}>Confirm</button>
-                    <button className="delete-btn cancel" onClick={() => setConfirmingId(null)}>Cancel</button>
-                  </span>
-                ) : (
-                  <button className="delete-btn" onClick={() => setConfirmingId(t.id)}>Delete</button>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="transaction-list">
+        {filteredTransactions.map(t => (
+          <div key={t.id} className="transaction-item">
+            <span className="tx-date">{t.date}</span>
+            <span className="tx-description">{t.description}</span>
+            <span className="tx-category">{t.category}</span>
+            <span className={`tx-amount ${t.type === 'income' ? 'income-amount' : 'expense-amount'}`}>
+              {t.type === 'income' ? '+' : '−'}${t.amount}
+            </span>
+            <div className="tx-actions">
+              {confirmingId === t.id ? (
+                <>
+                  <button className="confirm-btn" onClick={() => { onDelete(t.id); setConfirmingId(null); }}>Delete</button>
+                  <button className="cancel-btn" onClick={() => setConfirmingId(null)}>Cancel</button>
+                </>
+              ) : (
+                <button className="delete-btn" onClick={() => setConfirmingId(t.id)}>×</button>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
