@@ -1,19 +1,19 @@
-import { useState } from 'react'
-
-const categories = ["food", "housing", "utilities", "transport", "entertainment", "salary", "other"];
+import { useState, useMemo } from 'react'
+import { CATEGORIES } from './constants'
+import { filterTransactions } from './utils/transactions'
 
 function TransactionList({ transactions, onDelete }) {
   const [filterType, setFilterType] = useState("all");
   const [filterCategory, setFilterCategory] = useState("all");
   const [confirmingId, setConfirmingId] = useState(null);
 
-  let filteredTransactions = transactions;
-  if (filterType !== "all") {
-    filteredTransactions = filteredTransactions.filter(t => t.type === filterType);
-  }
-  if (filterCategory !== "all") {
-    filteredTransactions = filteredTransactions.filter(t => t.category === filterCategory);
-  }
+  const filteredTransactions = useMemo(
+    () => filterTransactions(transactions, { type: filterType, category: filterCategory }),
+    [transactions, filterType, filterCategory]
+  );
+
+  const formatAmount = (amount) =>
+    Number(amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
   return (
     <div className="transactions">
@@ -26,7 +26,7 @@ function TransactionList({ transactions, onDelete }) {
         </select>
         <select value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)}>
           <option value="all">All Categories</option>
-          {categories.map(cat => (
+          {CATEGORIES.map(cat => (
             <option key={cat} value={cat}>{cat}</option>
           ))}
         </select>
@@ -39,7 +39,7 @@ function TransactionList({ transactions, onDelete }) {
             <span className="tx-description">{t.description}</span>
             <span className="tx-category">{t.category}</span>
             <span className={`tx-amount ${t.type === 'income' ? 'income-amount' : 'expense-amount'}`}>
-              {t.type === 'income' ? '+' : '−'}${t.amount}
+              {t.type === 'income' ? '+' : '−'}${formatAmount(t.amount)}
             </span>
             <div className="tx-actions">
               {confirmingId === t.id ? (

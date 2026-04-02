@@ -1,30 +1,30 @@
 import { useState } from 'react'
+import { CATEGORIES } from './constants'
 
-const categories = ["food", "housing", "utilities", "transport", "entertainment", "salary", "other"];
+const INITIAL_FORM = { description: "", amount: "", type: "expense", category: "food" };
 
 function TransactionForm({ onAdd }) {
-  const [description, setDescription] = useState("");
-  const [amount, setAmount] = useState("");
-  const [type, setType] = useState("expense");
-  const [category, setCategory] = useState("food");
+  const [form, setForm] = useState(INITIAL_FORM);
+  const [error, setError] = useState("");
+
+  const handleChange = (field) => (e) => setForm(prev => ({ ...prev, [field]: e.target.value }));
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!description || !amount) return;
-
+    if (!form.description || !form.amount) {
+      setError("Please fill in both description and amount.");
+      return;
+    }
+    setError("");
     onAdd({
-      id: Date.now(),
-      description,
-      amount,
-      type,
-      category,
+      id: crypto.randomUUID(),
+      description: form.description,
+      amount: parseFloat(form.amount),
+      type: form.type,
+      category: form.category,
       date: new Date().toISOString().split('T')[0],
     });
-
-    setDescription("");
-    setAmount("");
-    setType("expense");
-    setCategory("food");
+    setForm(INITIAL_FORM);
   };
 
   return (
@@ -36,8 +36,8 @@ function TransactionForm({ onAdd }) {
           <input
             type="text"
             placeholder="e.g. Groceries"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            value={form.description}
+            onChange={handleChange("description")}
           />
         </div>
         <div className="form-field">
@@ -45,26 +45,29 @@ function TransactionForm({ onAdd }) {
           <input
             type="number"
             placeholder="0.00"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
+            min="0"
+            step="0.01"
+            value={form.amount}
+            onChange={handleChange("amount")}
           />
         </div>
         <div className="form-field">
           <label>Type</label>
-          <select value={type} onChange={(e) => setType(e.target.value)}>
+          <select value={form.type} onChange={handleChange("type")}>
             <option value="income">Income</option>
             <option value="expense">Expense</option>
           </select>
         </div>
         <div className="form-field">
           <label>Category</label>
-          <select value={category} onChange={(e) => setCategory(e.target.value)}>
-            {categories.map(cat => (
+          <select value={form.category} onChange={handleChange("category")}>
+            {CATEGORIES.map(cat => (
               <option key={cat} value={cat}>{cat}</option>
             ))}
           </select>
         </div>
         <button type="submit">Add</button>
+        {error && <p className="form-error">{error}</p>}
       </form>
     </div>
   );

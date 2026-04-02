@@ -1,5 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Lora:ital,wght@0,400;0,500;1,400&display=swap');
 
+:root {
+  --bg: #faf9f6;
+  --ink: #1a1a18;
+  --muted: #8a8a82;
+  --border: #d8d5ce;
+  --olive: #6b7c5c;
+  --terracotta: #b85c3a;
+  --olive-faint: #f0f2ee;
+  --section-gap: 52px;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -8,7 +19,7 @@
 
 body {
   font-family: 'Lora', Georgia, serif;
-  background-color: #faf9f6;
-  color: #1a1a18;
+  background-color: var(--bg);
+  color: var(--ink);
   -webkit-font-smoothing: antialiased;
 }
